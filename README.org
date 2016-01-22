@@ -1,0 +1,63 @@
+#+TITLE: =CL-GNUPLOT= : Plotting library for Common Lisp
+
+** Introduction and history
+Originally written by Ryan Adams 2005-2007.
+
+Updated and extended by Alexey Cherkaev, 2016.
+
+=CL-GNUPLOT= provides structured interface to GNUPlot
+functionality. Instead of writing the queries to GNUPlot, the user
+creates and manipulates =PLOT= objects.
+
+All the data is piped directly to GNUPlot without creating temporary
+files.
+
+*** IMPORTANT: depends on SBCL
+There are three non-standard functions that this package uses:
+- =sb-ext:run-program= :: starts GNUPlot instance.
+- =sb-ext:process-input= :: gets input stream from GNUPlot process
+- =sb-ext:process-close= :: stops GNUPlot instance.
+It is possible to extend it to support other CL implementation as far
+as they provide analogous functions.
+
+
+** Example
+
+This example should help to start with the package
+
+#+BEGIN_SRC lisp
+  (let ((series (make-series-2d
+                 (loop for x from 0 upto 360 by 10
+                    for y = (/ (* x pi) 180)
+                    collect (list y (sin y)))))
+        (plot (make-plot)))
+    (plot-title plot "Sine plot")
+    ;; change terminal, otherwise use default
+    (plot-cmd plot "set terminal png")
+    (plot-cmd plot "set output 'sin.png'")
+    (plot-add-series plot series
+                     :style "lines"
+                     :title "y=sin(x)")
+    (plot-xlabel plot "X")
+    (plot-ylabel plot "Y")
+    (plot-draw plot)
+    ;; very important: close the plot in the end!
+    (plot-close plot))
+#+END_SRC
+
+Result is shown below
+
+#+CAPTION: Example plot
+[[./sin.png]]
+
+
+** Plans for the future
+- Provide more structured commands, i.e. =plot-terminal=,
+  =plot-output=, etc.
+- =with-plot= macro
+- Support for other ANSI Common Lisp implementations: CCL, CLISP,
+  ABCL, CMUCL, CLASP.
+
+** License
+
+GPL2

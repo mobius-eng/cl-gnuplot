@@ -1,0 +1,10 @@
+*.org~
+*.asd~
+*.lisp~
+*.dx64fsl
+*.dx32fsl
+*.fasl
+*.pyg
+*.pdf
+*.html
+*.tex
