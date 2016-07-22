@@ -18,3 +18,7 @@
    #:plot-close
    #:plot-add-series
    #:plot-remove-series))
+
+
+(defpackage :cl-gnuplot2
+  (:use #:cl #:trivial-garbage))
